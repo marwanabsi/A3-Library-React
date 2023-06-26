@@ -4,14 +4,31 @@ import React, { useRef } from 'react';
 const FontAndLink = () => {
     
     const handleFontFamilyChange = (fontFamily) => {
-        document.execCommand('fontName', false, fontFamily);
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const span = document.createElement('span');
+            span.style.fontFamily = fontFamily;
+            range.surroundContents(span);
+        }
       };
   
       const handleInsertLink = () => {
         const url = prompt('Enter the URL:');
         const text = prompt('Enter the link text:');
-        document.execCommand('insertHTML', false, `<a href="${url}">${text}</a>`);
+      
+        const linkElement = document.createElement('a');
+        linkElement.href = url;
+        linkElement.textContent = text;
+      
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+          range.insertNode(linkElement);
+        }
       };
+      
 
 
     return(

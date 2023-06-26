@@ -3,11 +3,19 @@ import React, { useRef } from 'react';
 const ColorAndSize = () => {
   
     const handleColorChange = (color) => {
-        document.execCommand('foreColor', false, color);
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const span = document.createElement('span');
+          span.style.color = color;
+          range.surroundContents(span);
+        }
       };
+
       const handleFontSizeChange = (size) => {
         document.execCommand('fontSize', false, size);
       };
+      
       
 
     return(

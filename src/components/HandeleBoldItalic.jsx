@@ -5,55 +5,51 @@ const HandeleBoldItalic = () => {
     const contentEditableRef = useRef(null); 
 
     const handleBoldSelection = () => {
-        const selection = window.getSelection();
+      const selection = window.getSelection();
     
-        if (selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-          const selectedText = range.toString();
-    
-          const isBold = range.commonAncestorContainer.parentElement.tagName === 'B';
-    
-          if (isBold) {
-            document.execCommand('bold', false, null); 
-          } else {
-    
-    
-    
-            const boldElement = document.createElement('b');
-            boldElement.appendChild(document.createTextNode(selectedText));
-    
-            range.deleteContents();
-            range.insertNode(boldElement);
-          }
-        }
-      };
-    
-      const handelItalicSelection= () => {
-        const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
-          const selectedText = range.toString();
+        const selectedText = range.toString();
+        const isBold = document.queryCommandState('bold');
     
-          const isItalic = range.commonAncestorContainer.parentElement.tagName === 'I';
+        if (isBold) {
+          document.execCommand('bold', false, null);
+        } else {
+          const boldElement = document.createElement('b');
+          boldElement.appendChild(document.createTextNode(selectedText));
     
-          if (isItalic) {
-            document.execCommand('italic', false, null); 
-          } else {
+          range.deleteContents();
+          range.insertNode(boldElement);
+        }
+      }
+    };
     
+    const handleItalicSelection = () => {
+      const selection = window.getSelection();
     
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const selectedText = range.toString();
+        const isItalic = document.queryCommandState('italic');
     
-            const boldElement = document.createElement('i');
-            boldElement.appendChild(document.createTextNode(selectedText));
+        if (isItalic) {
+          document.execCommand('italic', false, null);
+        } else {
+          const italicElement = document.createElement('i');
+          italicElement.appendChild(document.createTextNode(selectedText));
     
-            range.deleteContents();
-            range.insertNode(boldElement);
-          }
-        };
+          range.deleteContents();
+          range.insertNode(italicElement);
+        }
+      }
+    };
+    
 
 
     return(
       <div>
           <button className='BoldButton' onClick={handleBoldSelection}>B</button>
-          <button className='ItalicButton'onClick={handelItalicSelection}>I</button>
+          <button className='ItalicButton'onClick={handleItalicSelection}>I</button>
       </div>
     
     );
